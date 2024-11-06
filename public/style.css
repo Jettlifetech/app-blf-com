@@ -1,0 +1,22 @@
+body {
+    background-color: #0066BF;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+textarea {
+    background-color: #2d2d2d;
+    color: #FFC300;
+    border: 1px solid #B5CA1D;
+    resize: none;
+}
+
+label {
+    color: #DC136C;
+}
+
+button {
+    margin-right: 10px;
+}

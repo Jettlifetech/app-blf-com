@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal WebApp</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #2d2d2d;">
+        <a class="navbar-brand" href="#">Web Terminal</a>
+    </nav>
+
+    <div class="container h-100 d-flex justify-content-center align-items-center">
+        <div class="w-50">
+            <form id="commandForm">
+                <div class="form-group">
+                    <label for="commandInput" class="text-white">Enter Command Prompt</label>
+                    <input type="text" class="form-control" id="commandInput" placeholder="Enter command here...">
+                </div>
+                <button type="submit" class="btn btn-primary">Run Command</button>
+                <button type="button" id="resetButton" class="btn btn-warning">Reset Form</button>
+            </form>
+
+            <div class="mt-4">
+                <textarea id="terminalOutput" class="form-control" rows="10" readonly></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const commandForm = document.getElementById('commandForm');
+        const commandInput = document.getElementById('commandInput');
+        const terminalOutput = document.getElementById('terminalOutput');
+        const resetButton = document.getElementById('resetButton');
+
+        commandForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const command = commandInput.value.trim();
+
+            if (command) {
+                console.log(`Sending command: ${command}`);
+                socket.emit('runCommand', command);
+            }
+        });
+
+        socket.on('terminalOutput', (data) => {
+            terminalOutput.value += data + '\n';
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        });
+
+        resetButton.addEventListener('click', () => {
+            commandInput.value = '';
+            terminalOutput.value = '';
+        });
+    </script>
+</body>
+</html>

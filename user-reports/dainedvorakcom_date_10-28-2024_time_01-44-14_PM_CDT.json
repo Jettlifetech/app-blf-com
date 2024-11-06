@@ -1,0 +1,23 @@
+{
+  "links": [
+    {
+      "url": "http://dainedvorak.com/main.js",
+      "status": 404,
+      "state": "BROKEN",
+      "parent": "http://dainedvorak.com/"
+    },
+    {
+      "url": "https://bit.ly/DainesLinkedIn",
+      "status": 400,
+      "state": "BROKEN",
+      "parent": "http://dainedvorak.com/"
+    },
+    {
+      "url": "https://bit.ly/DaineDLinkedIn2",
+      "status": 999,
+      "state": "BROKEN",
+      "parent": "http://dainedvorak.com/"
+    }
+  ],
+  "passed": false
+}

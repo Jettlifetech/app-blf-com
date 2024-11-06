@@ -1,0 +1,564 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Linkinator Command Generator</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <style>
+    body {
+      background-color: #f0f0f0;
+      color: #eaeaea;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .form-container {
+      background-color: #2d2d2d;
+      padding: 30px;
+margin-bottom: 2%;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+    }
+    .form-check-label {
+      font-size: 1.1em;
+    }
+    .form-control, .form-select  {
+      background-color: white;
+      color: #000000;
+      border-color: #006eff;
+    }
+    .form-check-input, .form-check-label{
+      background-color: transparent;
+      color: #eaeaea;
+      border-color: #006eff;
+    }
+    .form-control:focus, .form-check-input:focus, .form-select:focus {
+      border-color: #006eff;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+    .form-check-input:checked {
+      background-color: #006eff;
+      border-color: #006eff;
+    }
+    .form-switch .form-check-input:checked {
+      background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" fill="%23006eff" viewBox="0 0 16 16"%3E%3Cpath d="M16 7V9H0V7z"/%3E%3C/svg%3E');
+    }
+    .command-output {
+      background-color: #e4e4e4;
+      color: #000000;
+      border-radius: 10px;
+      font-family: 'Courier New', Courier, monospace;
+      border: 1px solid #006eff;
+      box-shadow: inset 0 0 10px rgba(237, 240, 240, 0.2);
+    }
+    .row {
+      margin-bottom: 20px;
+    }
+    .col-form-label {
+      font-size: 1em;
+    }
+    .toggle-label {
+      cursor: pointer;
+    }
+    .badge {
+      background-color: #0074D9;
+      color: #ffffff;
+      margin-left: 1px;
+      font-size: xx-small;
+      align-items: top;
+    }
+
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-dark bg-black">
+    <!-- Navbar content -->
+    <div class="container-fluid">
+  
+      <a class="navbar-brand mr-3" href="http://dev.brokenlinksfinder.com/">
+        <img src="https://code.jetlifecdn.com/broken-links-finder/images/broken-links-finder-llc-logo-150px-square.png" alt="" width="auto" height="70">  Broken Links Finder User UX Form
+      </a>
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="https://dev.brokenlinksfinder.com/web-form-development/broken-links-finder-webapp_dev/form-v8_2-blf.html">Sample UX Form</a>
+      </li>
+                <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="http://dev.brokenlinksfinder.com/">Web App</a>
+          </li>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="https://dev.brokenlinksfinder.com/web-form-development/broken-links-finder-webapp_dev/form-v8_2-blf.html">Sample UX Form</a>
+          </li>
+  
+        </ul>
+  
+      </div>
+    </div>
+  </nav>
+<div class="container">
+<div class="alert alert-primary mt-4" role="alert">
+v18.1.5 </div>
+</div>
+
+<div class="container mt-5 form-container">
+  <form id="linkForm">
+    <!-- URL Input Field -->
+    <div class="mb-4">
+      <label for="urlInput" class="form-label">Enter Your Domain URL:</label>
+      <input type="text" class="form-control" id="urlInput" placeholder="https://example.com/">
+    </div>
+
+ <!-- User Agent Dropdown -->
+ <div class="mb-4">
+  <label for="userAgentSelect" class="form-label">User Agent To Use:</label>
+  <select class="form-select" id="userAgentSelect">
+    <option value="">Default User Agent</option>
+    <option value="Mozilla/5.0 (iPad; CPU OS 8_4_1 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12H321 Safari/600.1.4">Apple iPad</option>
+    <option value="Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1">Apple iPhone</option>
+    <option value="Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)">Bing bot</option>
+    <option value="Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)">Google bot</option>
+    <option value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36">Google Chrome</option>
+    <option value="Mozilla/5.0 (Linux; U; Android-4.0.3; en-us; Galaxy Nexus Build/IML74K) AppleWebKit/535.7 (KHTML, like Gecko) CrMo/16.0.912.75 Mobile Safari/535.7">Google Nexus</option>
+    <option value="Mozilla/5.0 (Linux; Android 7.0; HTC 10 Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.83 Mobile Safari/537.36">HTC</option>
+    <option value="Lynx/2.8.8pre.4 libwww-FM/2.14 SSL-MM/1.4.1 GNUTLS/2.12.23">Lynx</option>
+    <option value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.79 Safari/537.36 Edge/14.14393">Microsoft Edge</option>
+    <option value="Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0; MDDCJS)">Microsoft Internet Explorer 10 / IE 10</option>
+    <option value="Mozilla/5.0 (compatible, MSIE 11, Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko">Microsoft Internet Explorer 11 / IE 11</option>
+    <option value="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)">Microsoft Internet Explorer 6 / IE 6</option>
+    <option value="Mozilla/5.0 (Windows; U; MSIE 7.0; Windows NT 6.0; en-US)">Microsoft Internet Explorer 7 / IE 7</option>
+    <option value="Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729)">Microsoft Internet Explorer 8 / IE 8</option>
+    <option value="Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.0; Trident/5.0;  Trident/5.0)">Microsoft Internet Explorer 9 / IE 9</option>
+    <option value="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:53.0) Gecko/20100101 Firefox/53.0">Mozilla Firefox</option>
+    <option value="Mozilla/5.0 (Linux; Android 5.0; SAMSUNG SM-N900 Build/LRX21V) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/2.1 Chrome/34.0.1847.76 Mobile Safari/537.36">Samsung Galaxy Note 3</option>
+    <option value="Mozilla/5.0 (Linux; Android 6.0.1; SAMSUNG SM-N910F Build/MMB29M) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/4.0 Chrome/44.0.2403.133 Mobile Safari/537.36">Samsung Galaxy Note 4</option>
+    <option value="Mozilla/5.0 (Linux; Android 13; SM-S901B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36">Samsung Galaxy S22 5G (SM-S901B)</option>
+    <option value="Mozilla/5.0 (Linux; Android 13; SM-S901U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36">Samsung Galaxy S22 5G (SM-S901U)</option>
+    <option value="Mozilla/5.0 (Linux; Android 13; SM-S908B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36">Samsung Galaxy S22 Ultra 5G (SM-S908B)</option>
+    <option value="Mozilla/5.0 (Linux; Android 13; SM-S908U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Mobile Safari/537.36">Samsung Galaxy S22 Ultra 5G (SM-S908U)</option>
+    <option value="Mozilla/5.0 (Linux; Android 6.0.1; SAMSUNG SM-G570Y Build/MMB29K) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/4.0 Chrome/44.0.2403.133 Mobile Safari/537.36">Samsung Phone</option>
+    <option value="Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)">Yahoo! bot</option>
+  </select>
+</div>
+
+    <!-- Option 1 (Moved up) -->
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="recurseCheckbox" checked>
+          <label class="form-check-label" for="recurseCheckbox">Do you want BLF to follow all links on the same root domain? (Default is to follow)</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 2 -->
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <label class="form-label">Change output format to JSON? (Default is CSV)    <span data-bs-toggle="tooltip" title="Get a JSON or CSV report. JSON can be used to automate the next steps of this process in other applications as input file.">?</span></label>
+      </div>
+      <div class="col-md-6">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="formatSwitch">
+          <label class="form-check-label toggle-label" for="formatSwitch" id="formatLabel">CSV</label>
+        </div>
+      </div>
+    </div>
+
+    
+    <!-- Option 3 -->
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <label class="form-label">Do you want BLF to automatically retry requests that return HTTP 429 responses?
+          <span class="badge badge-info" data-toggle="tooltip" data-placement="top" title="The number of connections to make simultaneously. Defaults to 100.">
+            Info
+          </span>  
+        </label>
+        
+      </div>
+      <div class="col-md-6">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="retrySwitch">
+          <label class="form-check-label toggle-label" for="retrySwitch" id="retryLabel">False</label>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Option 4 -->
+    <div class="row align-items-center">
+      <!-- Checkbox Column -->
+      <div class="col-md-6">
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="concurrencyCheckbox">
+          <label class="form-check-label" for="concurrencyCheckbox">Number of Links To Check At One Time</label>
+        </div>
+      </div>
+      <!-- Input Column -->
+      <div class="col-md-6">
+        <div class="d-none" id="concurrencyInputDiv">
+          <label for="concurrencyNumber" class="col-form-label">Number of links to test simultaneously.</label>
+          <input type="number" class="form-control" id="concurrencyNumber">
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 5 -->
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="timeoutCheckbox">
+          <label class="form-check-label" for="timeoutCheckbox">Set a Timeout (ms) when testing the URLs?</label>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="d-none" id="timeoutInputDiv">
+          <label for="timeout" class="col-form-label">How long to wait in milliseconds before timing out</label>
+          <input type="number" class="form-control" id="timeout">
+        </div>
+      </div>
+    </div>
+
+    
+    <!-- Option 6 -->
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="retryErrorsCheckbox">
+          <label class="form-check-label" for="retryErrorsCheckbox">Do you want BLF to automatically retry requests that return 5xx or unknown response?</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 7 -->
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="retryErrorsCountCheckbox">
+          <label class="form-check-label" for="retryErrorsCountCheckbox">How many times should an error be retried?</label>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="d-none" id="retryErrorsCountInputDiv">
+          <label for="retryErrorsCount" class="col-form-label">Number of times to retry any errors</label>
+          <input type="number" class="form-control" id="retryErrorsCount">
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 8 -->
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="retryErrorsJitterCheckbox">
+          <label class="form-check-label" for="retryErrorsJitterCheckbox">Enable Random jitter when retesting the errored URLs?</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 9 -->
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="skipCheckbox">
+          <label class="form-check-label" for="skipCheckbox">Should BLF Skip any URLs?</label>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="d-none" id="skipInputDiv">
+          <label for="skipURLs" class="col-form-label">Regex Formatted List of URLs to skip when testing domain</label>
+          <textarea class="form-control" id="skipURLs" rows="2"></textarea>
+        </div>
+      </div>
+    </div>
+<!-- Option 10 -->
+<div class="row align-items-center">
+  <div class="col-md-6">
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" id="includeCheckbox">
+      <label class="form-check-label" for="includeCheckbox">Do you want to add specific URLs to scan?</label>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="d-none" id="includeInputDiv">
+      <label for="includeURLs" class="col-form-label">Provide list of URLs in RegEx Format</label>
+      <input type="text" class="form-control" id="includeURLs">
+    </div>
+  </div>
+</div>
+
+<!-- Generated Command String - Final Output -->
+    <div class="mt-4">
+      <label for="commandOutput" class="form-label">Generated Command:</label>
+      <div class="input-group">
+        <textarea class="form-control command-output" id="commandOutput" rows="3" readonly></textarea>
+      </div>
+    </div>
+<br>
+    <button type="submit" class="btn btn-primary mt-5">Run Broken Links Finder Now!</button>
+  </form>
+
+
+  <!-- Real-time Feedback -->
+  <div class="mt-5">
+    <h3>Output Log:</h3>
+    <div id="log-output" style="background-color: #f8f9fa; padding: 15px; height: 300px; overflow-y: scroll;">
+      <!-- Terminal output will be streamed here -->
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS (optional if you need Bootstrap's JavaScript features) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<!-- For Socket.IO v4.x -->
+<!--script src="/socket.io/socket.io.js"></script>-->
+<script src="https://cdn.socket.io/4.4.1/socket.io.min.js">
+
+
+
+  // Change this line
+var socket = io();
+
+// To explicitly specify the server URL and port
+var socket = io('http://dev.brokenlinksfinder.com:4051');
+
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var baseCommand = 'linkinator';
+    var commandOutput = document.getElementById('commandOutput');
+
+    // URL Input
+    var urlInput = document.getElementById('urlInput');
+
+ // User Agent Select
+ var userAgentSelect = document.getElementById('userAgentSelect');
+
+    // Option elements
+    var concurrencyCheckbox = document.getElementById('concurrencyCheckbox');
+    var concurrencyInputDiv = document.getElementById('concurrencyInputDiv');
+    var concurrencyNumber = document.getElementById('concurrencyNumber');
+
+    var formatSwitch = document.getElementById('formatSwitch');
+    var formatLabel = document.getElementById('formatLabel');
+
+    var includeCheckbox = document.getElementById('includeCheckbox');
+    var includeInputDiv = document.getElementById('includeInputDiv');
+    var includeURLs = document.getElementById('includeURLs');
+
+    var recurseCheckbox = document.getElementById('recurseCheckbox');
+
+    var retrySwitch = document.getElementById('retrySwitch');
+    var retryLabel = document.getElementById('retryLabel');
+
+    var retryErrorsCheckbox = document.getElementById('retryErrorsCheckbox');
+
+    var retryErrorsCountCheckbox = document.getElementById('retryErrorsCountCheckbox');
+    var retryErrorsCountInputDiv = document.getElementById('retryErrorsCountInputDiv');
+    var retryErrorsCount = document.getElementById('retryErrorsCount');
+
+    var retryErrorsJitterCheckbox = document.getElementById('retryErrorsJitterCheckbox');
+
+    var skipCheckbox = document.getElementById('skipCheckbox');
+    var skipInputDiv = document.getElementById('skipInputDiv');
+    var skipURLs = document.getElementById('skipURLs');
+
+    var timeoutCheckbox = document.getElementById('timeoutCheckbox');
+    var timeoutInputDiv = document.getElementById('timeoutInputDiv');
+    var timeout = document.getElementById('timeout');
+
+    
+
+    // Initialize socket.io client
+    var socket = io();
+
+    // Handle form submission
+    document.getElementById('linkForm').addEventListener('submit', function(e) {
+      e.preventDefault(); // Prevent default form submission
+
+      // Get the command from the textarea
+      var command = document.getElementById('commandOutput').value;
+
+      // Emit a socket.io event to the server with the command
+      socket.emit('run-command', command);
+
+      // Clear the log-output div
+      document.getElementById('log-output').innerHTML = '';
+
+      // Set up listener for 'command-output' event
+      socket.on('command-output', function(data) {
+        // Append data to the log-output div
+        var logOutput = document.getElementById('log-output');
+        logOutput.innerHTML += data.replace(/\n/g, '<br>');
+        logOutput.scrollTop = logOutput.scrollHeight; // Scroll to bottom
+      });
+    });
+
+    // Validate and format URL
+    function formatURL(url) {
+      url = url.trim();
+      if (!url.startsWith('https://') && !url.startsWith('http://')) {
+        url = 'https://' + url;
+      }
+
+      return url;
+    }
+
+// Append user-agent parameter if selected
+var userAgent = userAgentSelect.value;
+      if (userAgent) {
+        command += ' --user-agent "' + userAgent + '"';
+      }
+    // Update command function
+    function updateCommand() {
+      var command = baseCommand;
+
+      // Get and format URL
+      var url = urlInput.value;
+      if (url) {
+        url = formatURL(url);
+        urlInput.value = url; // Update the input field with the formatted URL
+        command += ' ' + url;
+      } else {
+        command += ' <your domain>';
+      }
+
+      // Option 1: recurseCheckbox
+      if (recurseCheckbox.checked) {
+        command += ' --recurse';
+      } else {
+        command += ' --no-recurse';
+      }
+
+      // Option 2: formatSwitch
+      var format = formatSwitch.checked ? 'json' : 'csv';
+      formatLabel.textContent = formatSwitch.checked ? 'JSON' : 'CSV';
+      command += ' --format ' + format;
+
+      // Option 3: retrySwitch
+      retryLabel.textContent = retrySwitch.checked ? 'True' : 'False';
+      if (retrySwitch.checked) {
+        command += ' --retry';
+      }
+
+      // Option 4: concurrency
+      if (concurrencyCheckbox.checked) {
+        var number = concurrencyNumber.value;
+        if (number) {
+          command += ' --concurrency ' + number;
+        } else {
+          command += ' --concurrency';
+        }
+      }
+
+      // Option 5: timeout
+      if (timeoutCheckbox.checked) {
+        var time = timeout.value;
+        if (time) {
+          command += ' --timeout ' + time;
+        } else {
+          command += ' --timeout';
+        }
+      }
+
+      // Option 6: retry-errors
+      if (retryErrorsCheckbox.checked) {
+        command += ' --retry-errors';
+      }
+
+      // Option 7: retry-errors-count
+      if (retryErrorsCountCheckbox.checked) {
+        var count = retryErrorsCount.value;
+        if (count) {
+          command += ' --retry-errors-count ' + count;
+        } else {
+          command += ' --retry-errors-count';
+        }
+      }
+
+      // Option 8: retry-errors-jitter
+      if (retryErrorsJitterCheckbox.checked) {
+        command += ' --retry-errors-jitter';
+      }
+
+      // Option 9: skip
+      if (skipCheckbox.checked) {
+        var skip = skipURLs.value.trim();
+        if (skip) {
+          command += ' --skip ' + skip;
+        } else {
+          command += ' --skip';
+        }
+      }
+
+      // Option 10: include
+      if (includeCheckbox.checked) {
+        var include = includeURLs.value.trim();
+        if (include) {
+          command += ' --include ' + include;
+        } else {
+          command += ' --include';
+        }
+      }
+
+      commandOutput.value = command;
+    }
+
+    // Event listeners
+    urlInput.addEventListener('input', updateCommand);
+    userAgentSelect.addEventListener('change', updateCommand);
+
+    concurrencyCheckbox.addEventListener('change', function() {
+      concurrencyInputDiv.classList.toggle('d-none', !this.checked);
+      updateCommand();
+    });
+    concurrencyNumber.addEventListener('input', updateCommand);
+
+    formatSwitch.addEventListener('change', updateCommand);
+
+    includeCheckbox.addEventListener('change', function() {
+      includeInputDiv.classList.toggle('d-none', !this.checked);
+      updateCommand();
+    });
+    includeURLs.addEventListener('input', updateCommand);
+
+    recurseCheckbox.addEventListener('change', updateCommand);
+
+    retrySwitch.addEventListener('change', updateCommand);
+
+    retryErrorsCheckbox.addEventListener('change', updateCommand);
+
+    retryErrorsCountCheckbox.addEventListener('change', function() {
+      retryErrorsCountInputDiv.classList.toggle('d-none', !this.checked);
+      updateCommand();
+    });
+    retryErrorsCount.addEventListener('input', updateCommand);
+
+    retryErrorsJitterCheckbox.addEventListener('change', updateCommand);
+
+    skipCheckbox.addEventListener('change', function() {
+      skipInputDiv.classList.toggle('d-none', !this.checked);
+      updateCommand();
+    });
+    skipURLs.addEventListener('input', updateCommand);
+
+    timeoutCheckbox.addEventListener('change', function() {
+      timeoutInputDiv.classList.toggle('d-none', !this.checked);
+      updateCommand();
+    });
+    timeout.addEventListener('input', updateCommand);
+
+    // Initialize the command output
+    updateCommand();
+  });
+</script>
+
+</body>
+</html>

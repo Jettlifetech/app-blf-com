@@ -4,9 +4,9 @@
 1. Add functionality to generate a CSV or JSON report from the terminal output
 2. Provide a download button for the generated report
 3. Need to add:
-    [ ] A progress bar?
-    [ ] Some sort of indicator of how many URLs are found?
-    [ ] how many have been scanned?
+    - [] A progress bar?
+    - [] Some sort of indicator of how many URLs are found?
+    - [] how many have been scanned?
 
 
 
@@ -16,9 +16,9 @@
 
 
 # Deploying
-Step 1. download to directory where u want to install
-Step 2. ```npm install```
-Step 3. modify Virtual host configuration making the ports = same as whats in server.js
+1. download to directory where u want to install
+2. ```npm install```
+3. modify Virtual host configuration making the ports = same as whats in server.js
     ```
     <VirtualHost *:80>
     ServerName app.brokenlinksfinder.com

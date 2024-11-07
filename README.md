@@ -1,18 +1,17 @@
 # This repo is for the domain: "app.brokenlinksfinder.com" continued development 
 
 ## Need to develop the following
-1. Add functionality to generate a CSV or JSON report from the terminal output
-2. Provide a download button for the generated report
-3. Need to add:
+1. Need to add some sort of progress indicator:
     - [] A progress bar?
     - [] Some sort of indicator of how many URLs are found?
     - [] how many have been scanned?
-
+2. Add functionality to generate a CSV or JSON report from the terminal output
+3. Provide a download button for the generated report
+ 
 
 
 # Current progress
 1. Save Repo changes - scans sites through browser UX web app allowing user to modify the way it crawls the website, and provides real-time feedback that is fully working. Still need improvements - see readme
-
 
 
 # Deploying
@@ -37,5 +36,4 @@
 
     ErrorLog ${APACHE_LOG_DIR}/cmd-app-error.log
     CustomLog ${APACHE_LOG_DIR}/cmd-app-access.log combined
-    </VirtualHost>
-```
+    </VirtualHost>```

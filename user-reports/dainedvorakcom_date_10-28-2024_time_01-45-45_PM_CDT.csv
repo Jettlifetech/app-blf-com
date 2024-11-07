@@ -1,4 +1,0 @@
-url,status,state,parent,failureDetails
-"https://dainedvorak.com/main.js",404,BROKEN,"https://dainedvorak.com/",""
-"https://bit.ly/DainesLinkedIn",400,BROKEN,"https://dainedvorak.com/",""
-"https://bit.ly/DaineDLinkedIn2",999,BROKEN,"https://dainedvorak.com/",""

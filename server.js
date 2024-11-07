@@ -40,7 +40,9 @@ io.on('connection', (socket) => {
         });
 
         process.on('close', (code) => {
-            socket.emit('terminalOutput', `Process exited with code ${code}`);
+            socket.emit('terminalOutput', `Process exited with code ${code}`, 
+            socket.emit('terminalOutput', 'Command completed successfully if code = 0')
+            );
         });
     });
 

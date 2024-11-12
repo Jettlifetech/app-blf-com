@@ -320,7 +320,7 @@
           </div>
         </div>
       </div>
-<!-- Option 10 
+      <!-- Option 10 -->
       <div class="row align-items-center">
         <div class="col-md-6">
           <label class="form-label">Change output format to JSON? (Default is CSV) 
@@ -336,27 +336,8 @@
             <label class="form-check-label toggle-label" for="formatSwitch" id="formatLabel">CSV</label>
           </div>
         </div>
-      </div>-->
-
-      <!-- Option 10 - Change output format to JSON or CSV -->
-<div class="row align-items-center">
-  <div class="col-md-6">
-    <label class="form-label">Select Report Format:
-      <span class="badge badge-info" data-placement="top" data-toggle="tooltip"
-        title="Choose the format for the report.">
-        Info
-      </span>
-    </label>
-  </div>
-  <div class="col-md-6">
-    <select class="form-select" id="reportFormat">
-      <option value="CSV" selected>CSV</option>
-      <option value="JSON">JSON</option>
-    </select>
-  </div>
-</div>
-
-      <hr style="height: 14px; background-color: rgb(233, 0, 0);">
+      </div>
+      <hr style="height: 14px; background-color: rgb(255, 255, 255);">
       <!-- Generated Command String - Final Output -->
       <div class="mt-4">
         <label class="form-label font-weight-bold" for="commandOutput"><h3>Generated Command</h3></label>
@@ -372,15 +353,6 @@
 
       </div>
     </form>
-
-    <!-- Timer element (hidden by default) -->
-<div id="timer" class="d-none">
-  <span id="timerLabel">Time Elapsed:</span>
-  <span id="timerValue">00:00:00</span>
-</div>
-
-<!-- Download Report Button -->
-<button id="downloadReportButton" class="btn btn-success mt-3 d-none">Download Report</button>
 <!--DD Custom counters -- START -->
   
     <div class="row" id="realtime_results">
@@ -422,7 +394,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
   <!-- Socket.IO -->
   <script src="/socket.io/socket.io.js"></script>
-  <script src="/public/progress.js"></script>
 
 
  <script>
@@ -474,15 +445,6 @@
        updateCommand();
      });
  
-     document.getElementById('run-commands').addEventListener('click', function() {
-    // Show the timer and start it
-    document.getElementById('timer').classList.remove('d-none');
-    // Start the timer here (functionality to be implemented)
-
-    // Show the realtime_results div
-    document.getElementById('realtime_results').classList.remove('d-none');
-  });
-
      // Your existing JavaScript code for updating the commandOutput based on form inputs
      document.addEventListener('DOMContentLoaded', function () {
        var baseCommand = 'linkinator';
@@ -608,7 +570,6 @@
          }
  
          // Option 10: include
-         
          if (includeCheckbox.checked) {
            var include = includeURLs.value.trim();
            if (include) {

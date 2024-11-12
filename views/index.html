@@ -342,7 +342,7 @@
       <div class="mt-4">
         <label class="form-label font-weight-bold" for="commandOutput"><h3>Generated Command</h3></label>
         <div class="input-group">
-          <textarea class="form-control command-output" id="commandOutput" rows="3"></textarea>
+          <textarea class="form-control command-output" id="commandOutput" rows="3" readonly></textarea>
         </div>
       </div>
       <br />
@@ -353,8 +353,31 @@
 
       </div>
     </form>
+<!--DD Custom counters -- START -->
+  
+    <div class="row" id="realtime_results">
+      <div class="col-sm p-3 text-center  font-weight-bold">
+    Total Number of URLs Found
+    
+    <div class="alert alert-success">
+    <p id="total_urls">100</p></div>
+    </div>
+      <div class="col-sm p-3 text-center font-weight-bold ">
+    Total Number of Broken URLs Found
+    <div class="alert alert-warning text-center font-weight-bold">
+    <p id="total_broken_urls">100</p>
+    </div>
+    </div>
+    
+
+    
+    </div>
+    <!--DD Custom counters -- END -->
+    </div>
+<button id="downloadReportButton" class="d-none">Download Report</button>
+
     <!-- Real-time Feedback -->
-    <div class="mt-5">
+    <div class="mt-5 mb-5 p-3">
       <div class="bg-light rounded p-3 align-items-center">
       <h3 class="font-weight-bold  text-center" style="color:#007adf">Real-Time Output Logging</h3>
     </div>
@@ -363,254 +386,249 @@
       </div>
     </div>
   </div>
+
+  
   <!-- Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
   <!-- Socket.IO -->
   <script src="/socket.io/socket.io.js"></script>
-  <script>
-    // Initialize socket.io client
-    const socket = io();
-
-    // Elements
-    const commandForm = document.getElementById('commandForm');
-    const commandOutput = document.getElementById('commandOutput');
-    const terminalOutput = document.getElementById('terminalOutput');
-    const resetButton = document.getElementById('resetButton');
-
-    // Handle form submission
-    commandForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const command = commandOutput.value.trim();
-
-      if (command) {
-        console.log(`Sending command: ${command}`);
-        socket.emit('runCommand', command);
-      }
-    });
-
-    // Listen for terminal output
-    socket.on('terminalOutput', (data) => {
-      terminalOutput.value += data + '\n';
-      terminalOutput.scrollTop = terminalOutput.scrollHeight;
-    });
-
-    // Reset button functionality
-    resetButton.addEventListener('click', () => {
-      commandOutput.value = '';
-      terminalOutput.value = '';
-      // Reset other form fields if necessary
-      document.getElementById('commandForm').reset();
-      // Hide optional input divs
-      document.getElementById('concurrencyInputDiv').classList.add('d-none');
-      document.getElementById('timeoutInputDiv').classList.add('d-none');
-      document.getElementById('retryErrorsCountInputDiv').classList.add('d-none');
-      document.getElementById('skipInputDiv').classList.add('d-none');
-      document.getElementById('includeInputDiv').classList.add('d-none');
-      // Update the command output
-      updateCommand();
-    });
-
-    // Your existing JavaScript code for updating the commandOutput based on form inputs
-    document.addEventListener('DOMContentLoaded', function () {
-      var baseCommand = 'linkinator';
-      var commandOutput = document.getElementById('commandOutput');
-
-      // URL Input
-      var urlInput = document.getElementById('urlInput');
-
-      // Option elements
-      var concurrencyCheckbox = document.getElementById('concurrencyCheckbox');
-      var concurrencyInputDiv = document.getElementById('concurrencyInputDiv');
-      var concurrencyNumber = document.getElementById('concurrencyNumber');
-
-      /* var formatSwitch = document.getElementById('formatSwitch');
-      var formatLabel = document.getElementById('formatLabel');
- */
-      var includeCheckbox = document.getElementById('includeCheckbox');
-      var includeInputDiv = document.getElementById('includeInputDiv');
-      var includeURLs = document.getElementById('includeURLs');
-
-      var recurseCheckbox = document.getElementById('recurseCheckbox');
-
-      var retrySwitch = document.getElementById('retrySwitch');
-      var retryLabel = document.getElementById('retryLabel');
-
-      var retryErrorsCheckbox = document.getElementById('retryErrorsCheckbox');
-
-      var retryErrorsCountCheckbox = document.getElementById('retryErrorsCountCheckbox');
-      var retryErrorsCountInputDiv = document.getElementById('retryErrorsCountInputDiv');
-      var retryErrorsCount = document.getElementById('retryErrorsCount');
-
-      var retryErrorsJitterCheckbox = document.getElementById('retryErrorsJitterCheckbox');
-
-      var skipCheckbox = document.getElementById('skipCheckbox');
-      var skipInputDiv = document.getElementById('skipInputDiv');
-      var skipURLs = document.getElementById('skipURLs');
-
-      var timeoutCheckbox = document.getElementById('timeoutCheckbox');
-      var timeoutInputDiv = document.getElementById('timeoutInputDiv');
-      var timeout = document.getElementById('timeout');
 
 
+ <script>
+     // Initialize socket.io client
+     const socket = io();
+ 
+     // Elements
+     const commandForm = document.getElementById('commandForm');
+     const commandOutput = document.getElementById('commandOutput');
+     const terminalOutput = document.getElementById('terminalOutput');
+     const resetButton = document.getElementById('resetButton');
+     const downloadReportButton = document.getElementById('downloadReportButton');
+ 
+     // Handle form submission
+     commandForm.addEventListener('submit', (event) => {
+       event.preventDefault();
+       const command = commandOutput.value.trim();
+ 
+       if (command) {
+         console.log(`Sending command: ${command}`);
+         socket.emit('runCommand', command);
+       }
+     });
+ 
+     // Listen for terminal output
+     socket.on('terminalOutput', (data) => {
+       terminalOutput.value += data + '\n';
+       terminalOutput.scrollTop = terminalOutput.scrollHeight;
+     });
+ 
+     // Listen for report generation
+     socket.on('reportGenerated', (filePath) => {
+       // Show the download button
+       downloadReportButton.classList.remove('d-none');
+       downloadReportButton.href = filePath;
+       downloadReportButton.download = path.basename(filePath);
+     });
+ 
+     // Reset button functionality
+     resetButton.addEventListener('click', () => {
+       commandOutput.value = '';
+       terminalOutput.value = '';
+       document.getElementById('commandForm').reset();
+       document.getElementById('concurrencyInputDiv').classList.add('d-none');
+       document.getElementById('timeoutInputDiv').classList.add('d-none');
+       document.getElementById('retryErrorsCountInputDiv').classList.add('d-none');
+       document.getElementById('skipInputDiv').classList.add('d-none');
+       document.getElementById('includeInputDiv').classList.add('d-none');
+       updateCommand();
+     });
+ 
+     // Your existing JavaScript code for updating the commandOutput based on form inputs
+     document.addEventListener('DOMContentLoaded', function () {
+       var baseCommand = 'linkinator';
+       var commandOutput = document.getElementById('commandOutput');
+ 
+       // URL Input
+       var urlInput = document.getElementById('urlInput');
+ 
+       // Option elements
+       var concurrencyCheckbox = document.getElementById('concurrencyCheckbox');
+       var concurrencyInputDiv = document.getElementById('concurrencyInputDiv');
+       var concurrencyNumber = document.getElementById('concurrencyNumber');
+ 
+       var includeCheckbox = document.getElementById('includeCheckbox');
+       var includeInputDiv = document.getElementById('includeInputDiv');
+       var includeURLs = document.getElementById('includeURLs');
+ 
+       var recurseCheckbox = document.getElementById('recurseCheckbox');
+ 
+       var retrySwitch = document.getElementById('retrySwitch');
+       var retryLabel = document.getElementById('retryLabel');
+ 
+       var retryErrorsCheckbox = document.getElementById('retryErrorsCheckbox');
+ 
+       var retryErrorsCountCheckbox = document.getElementById('retryErrorsCountCheckbox');
+       var retryErrorsCountInputDiv = document.getElementById('retryErrorsCountInputDiv');
+       var retryErrorsCount = document.getElementById('retryErrorsCount');
+ 
+       var retryErrorsJitterCheckbox = document.getElementById('retryErrorsJitterCheckbox');
+ 
+       var skipCheckbox = document.getElementById('skipCheckbox');
+       var skipInputDiv = document.getElementById('skipInputDiv');
+       var skipURLs = document.getElementById('skipURLs');
+ 
+       var timeoutCheckbox = document.getElementById('timeoutCheckbox');
+       var timeoutInputDiv = document.getElementById('timeoutInputDiv');
+       var timeout = document.getElementById('timeout');
+ 
+       // Validate and format URL
+       function formatURL(url) {
+         url = url.trim();
+         if (!url.startsWith('https://') && !url.startsWith('http://')) {
+           url = 'https://' + url;
+         }
+         return url;
+       }
+ 
+       // Update command function
+       function updateCommand() {
+         var command = baseCommand;
+ 
+         // Get and format URL
+         var url = urlInput.value;
+         if (url) {
+           url = formatURL(url);
+           urlInput.value = url; // Update the input field with the formatted URL
+           command += ' ' + url;
+         } else {
+           command += ' <your domain>';
+         }
+ 
+         // Option 1: recurseCheckbox
+         if (recurseCheckbox.checked) {
+           command += ' --recurse';
+         } else {
+           command += ' --no-recurse';
+         }
+ 
+         // Option 3: retrySwitch
+         retryLabel.textContent = retrySwitch.checked ? 'True' : 'False';
+         if (retrySwitch.checked) {
+           command += ' --retry';
+         }
+ 
+         // Option 4: concurrency
+         if (concurrencyCheckbox.checked) {
+           var number = concurrencyNumber.value;
+           if (number) {
+             command += ' --concurrency ' + number;
+           } else {
+             command += ' --concurrency';
+           }
+         }
+ 
+         // Option 5: timeout
+         if (timeoutCheckbox.checked) {
+           var time = timeout.value;
+           if (time) {
+             command += ' --timeout ' + time;
+           } else {
+             command += ' --timeout';
+           }
+         }
+ 
+         // Option 6: retry-errors
+         if (retryErrorsCheckbox.checked) {
+           command += ' --retry-errors';
+         }
+ 
+         // Option 7: retry-errors-count
+         if (retryErrorsCountCheckbox.checked) {
+           var count = retryErrorsCount.value;
+           if (count) {
+             command += ' --retry-errors-count ' + count;
+           } else {
+             command += ' --retry-errors-count';
+           }
+         }
+ 
+         // Option 8: retry-errors-jitter
+         if (retryErrorsJitterCheckbox.checked) {
+           command += ' --retry-errors-jitter';
+         }
+ 
+         // Option 9: skip
+         if (skipCheckbox.checked) {
+           var skip = skipURLs.value.trim();
+           if (skip) {
+             command += ' --skip ' + skip;
+           } else {
+             command += ' --skip';
+           }
+         }
+ 
+         // Option 10: include
+         if (includeCheckbox.checked) {
+           var include = includeURLs.value.trim();
+           if (include) {
+             command += ' --include ' + include;
+           } else {
+             command += ' --include';
+           }
+         }
+ 
+         commandOutput.value = command;
+       }
+ 
+       // Event listeners
+       urlInput.addEventListener('input', updateCommand);
+ 
+       concurrencyCheckbox.addEventListener('change', function () {
+         concurrencyInputDiv.classList.toggle('d-none', !this.checked);
+         updateCommand();
+       });
+       concurrencyNumber.addEventListener('input', updateCommand);
+ 
+       includeCheckbox.addEventListener('change', function () {
+         includeInputDiv.classList.toggle('d-none', !this.checked);
+         updateCommand();
+       });
+       includeURLs.addEventListener('input', updateCommand);
+ 
+       recurseCheckbox.addEventListener('change', updateCommand);
+ 
+       retrySwitch.addEventListener('change', updateCommand);
+ 
+       retryErrorsCheckbox.addEventListener('change', updateCommand);
+ 
+       retryErrorsCountCheckbox.addEventListener('change', function () {
+         retryErrorsCountInputDiv.classList.toggle('d-none', !this.checked);
+         updateCommand();
+       });
+       retryErrorsCount.addEventListener('input', updateCommand);
+ 
+       retryErrorsJitterCheckbox.addEventListener('change', updateCommand);
+ 
+       skipCheckbox.addEventListener('change', function () {
+         skipInputDiv.classList.toggle('d-none', !this.checked);
+         updateCommand();
+       });
+       skipURLs.addEventListener('input', updateCommand);
+ 
+       timeoutCheckbox.addEventListener('change', function () {
+         timeoutInputDiv.classList.toggle('d-none', !this.checked);
+         updateCommand();
+       });
+       timeout.addEventListener('input', updateCommand);
+ 
+       // Initialize the command output
+       updateCommand();
+     });
+ </script>
+ 
 
-      // Validate and format URL
-      function formatURL(url) {
-        url = url.trim();
-        if (!url.startsWith('https://') && !url.startsWith('http://')) {
-          url = 'https://' + url;
-        }
-        return url;
-      }
-
-      // Update command function
-      function updateCommand() {
-        var command = baseCommand;
-
-        // Get and format URL
-        var url = urlInput.value;
-        if (url) {
-          url = formatURL(url);
-          urlInput.value = url; // Update the input field with the formatted URL
-          command += ' ' + url;
-        } else {
-          command += ' <your domain>';
-        }
-
-        // Option 1: recurseCheckbox
-        if (recurseCheckbox.checked) {
-          command += ' --recurse';
-        } else {
-          command += ' --no-recurse';
-        }
-
-        // Option 3: retrySwitch
-        retryLabel.textContent = retrySwitch.checked ? 'True' : 'False';
-        if (retrySwitch.checked) {
-          command += ' --retry';
-        }
-
-        // Option 4: concurrency
-        if (concurrencyCheckbox.checked) {
-          var number = concurrencyNumber.value;
-          if (number) {
-            command += ' --concurrency ' + number;
-          } else {
-            command += ' --concurrency';
-          }
-        }
-
-        // Option 5: timeout
-        if (timeoutCheckbox.checked) {
-          var time = timeout.value;
-          if (time) {
-            command += ' --timeout ' + time;
-          } else {
-            command += ' --timeout';
-          }
-        }
-
-        // Option 6: retry-errors
-        if (retryErrorsCheckbox.checked) {
-          command += ' --retry-errors';
-        }
-
-        // Option 7: retry-errors-count
-        if (retryErrorsCountCheckbox.checked) {
-          var count = retryErrorsCount.value;
-          if (count) {
-            command += ' --retry-errors-count ' + count;
-          } else {
-            command += ' --retry-errors-count';
-          }
-        }
-
-        // Option 8: retry-errors-jitter
-        if (retryErrorsJitterCheckbox.checked) {
-          command += ' --retry-errors-jitter';
-        }
-
-        // Option 9: skip
-        if (skipCheckbox.checked) {
-          var skip = skipURLs.value.trim();
-          if (skip) {
-            command += ' --skip ' + skip;
-          } else {
-            command += ' --skip';
-          }
-        }
-
-        // Option 10: include
-        if (includeCheckbox.checked) {
-          var include = includeURLs.value.trim();
-          if (include) {
-            command += ' --include ' + include;
-          } else {
-            command += ' --include';
-          }
-        }
-
-
-        // Option 2: formatSwitch
-        var format = formatSwitch.checked ? 'json' : 'csv';
-        formatLabel.textContent = formatSwitch.checked ? 'JSON' : 'CSV';
-        command += ' --format ' + format;
-//        command += ' --format ' + format + ' > /var/www/cmd-app-v1.brokenlinksfinder.com/user-reports/' + urlInput.value;
-
-
-
-        commandOutput.value = command;
-      }
-
-      // Event listeners
-      urlInput.addEventListener('input', updateCommand);
-
-      concurrencyCheckbox.addEventListener('change', function () {
-        concurrencyInputDiv.classList.toggle('d-none', !this.checked);
-        updateCommand();
-      });
-      concurrencyNumber.addEventListener('input', updateCommand);
-
-
-      includeCheckbox.addEventListener('change', function () {
-        includeInputDiv.classList.toggle('d-none', !this.checked);
-        updateCommand();
-      });
-      includeURLs.addEventListener('input', updateCommand);
-
-      recurseCheckbox.addEventListener('change', updateCommand);
-
-      retrySwitch.addEventListener('change', updateCommand);
-
-      retryErrorsCheckbox.addEventListener('change', updateCommand);
-
-      retryErrorsCountCheckbox.addEventListener('change', function () {
-        retryErrorsCountInputDiv.classList.toggle('d-none', !this.checked);
-        updateCommand();
-      });
-      retryErrorsCount.addEventListener('input', updateCommand);
-
-      retryErrorsJitterCheckbox.addEventListener('change', updateCommand);
-
-      skipCheckbox.addEventListener('change', function () {
-        skipInputDiv.classList.toggle('d-none', !this.checked);
-        updateCommand();
-      });
-      skipURLs.addEventListener('input', updateCommand);
-
-      timeoutCheckbox.addEventListener('change', function () {
-        timeoutInputDiv.classList.toggle('d-none', !this.checked);
-        updateCommand();
-      });
-      timeout.addEventListener('input', updateCommand);
-
-      formatSwitch.addEventListener('change', updateCommand);
-
-      // Initialize the command output
-      updateCommand();
-    });
-  </script>
 </body>
 
 </html>

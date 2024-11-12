@@ -20,3 +20,22 @@ label {
 button {
     margin-right: 10px;
 }
+#progress-container {
+    margin: 20px 0;
+    width: 100%;
+  }
+  #progress-bar {
+    width: 100%;
+  }
+  #modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    text-align: center;
+    padding-top: 50px;
+  }
